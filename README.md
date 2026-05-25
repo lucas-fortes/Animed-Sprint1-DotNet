@@ -1,8 +1,8 @@
-# Animed API - .NET
+# Animed - Mobile App Development
 
-API REST desenvolvida em **ASP.NET Core Web API** para o projeto Animed, dentro do contexto do Challenge CLYVO VET.
+Projeto mobile desenvolvido em **React Native com Expo e TypeScript** para a disciplina de **Mobile App Development**, dentro do contexto do **Challenge FIAP 2026 - CLYVO VET**.
 
-O objetivo da API é fornecer uma camada backend para gerenciamento de tutores, pets, consultas e vacinas, utilizando arquitetura em camadas, Entity Framework Core e persistência em banco de dados Oracle.
+O aplicativo **Animed** tem como objetivo simular uma solução mobile para apoio ao acompanhamento clínico veterinário, permitindo o registro de atendimentos, visualização dos agendamentos do dia, consulta de histórico clínico, edição de perfil profissional e gerenciamento de dados locais.
 
 ---
 
@@ -16,164 +16,314 @@ O objetivo da API é fornecer uma camada backend para gerenciamento de tutores, 
 
 ---
 
+## Contexto do Projeto
+
+O Challenge CLYVO VET propõe soluções digitais relacionadas à continuidade do cuidado e ao engajamento na jornada de saúde do pet.
+
+Dentro desse contexto, o **Animed** foi desenvolvido como um protótipo funcional mobile voltado ao profissional veterinário, com foco em:
+
+- cadastro e acompanhamento de registros clínicos;
+- vinculação de tutor ao atendimento;
+- organização dos atendimentos do dia;
+- consulta de histórico clínico;
+- armazenamento local dos dados;
+- experiência mobile com navegação entre telas.
+
+Esta versão funciona em **modo demonstrativo**, utilizando persistência local com `AsyncStorage`, sem integração com API externa ou banco de dados remoto nesta etapa.
+
+---
+
 ## Tecnologias Utilizadas
 
-- C#
-- .NET
-- ASP.NET Core Web API
-- Entity Framework Core
-- Oracle Database
-- Oracle.EntityFrameworkCore
-- Swagger / OpenAPI
-- Visual Studio Community
-- VS Code
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- AsyncStorage
+- Expo Vector Icons
 
 ---
 
-## Arquitetura do Projeto
+## Principais Conceitos Aplicados
 
-O projeto segue uma estrutura em camadas:
+O projeto utiliza os principais conceitos abordados nas aulas de Mobile App Development.
+
+### Componentes React Native
+
+Foram utilizados componentes nativos como:
+
+- `View`
+- `Text`
+- `TextInput`
+- `Image`
+- `ScrollView`
+- `Modal`
+- `Switch`
+- `Alert`
+- `TouchableHighlight`
+- `TouchableWithoutFeedback`
+- `KeyboardAvoidingView`
+
+### TypeScript
+
+O projeto utiliza TypeScript para tipagem de dados, props e estruturas principais da aplicação.
+
+Exemplos de tipos utilizados:
+
+- `RegistroClinico`
+- `Tutor`
+- `Animal`
+- `Usuario`
+- `Atendimento`
+- `PerfilUsuario`
+- `ConfiguracoesApp`
+
+### Hooks
+
+Foram utilizados hooks para controle de estado, carregamento e atualização de dados:
+
+- `useState`
+- `useEffect`
+- `useFocusEffect`
+
+### TextInput Controlado
+
+Os campos de formulário utilizam o padrão de componente controlado, com:
+
+- `value`
+- `onChangeText`
+- estado local com `useState`
+
+Esse padrão foi aplicado nas telas de login, cadastro, recuperação de senha, registro clínico, histórico e perfil.
+
+### Navegação
+
+A navegação principal do aplicativo é feita com React Navigation, utilizando navegação por abas inferiores.
+
+Telas principais:
+
+- Login
+- Cadastro
+- Recuperar Senha
+- Início / Dashboard
+- Registro Clínico
+- Histórico Clínico
+- Perfil
+- Configurações
+
+Também existe um menu lateral global acessado pelo botão sanduíche.
+
+### Persistência Local
+
+O aplicativo utiliza `AsyncStorage` para persistir dados localmente no dispositivo.
+
+Dados armazenados:
+
+- registros clínicos;
+- perfil do usuário;
+- configurações do aplicativo.
+
+---
+
+## Funcionalidades Implementadas
+
+### Login
+
+Tela inicial de autenticação em modo demonstrativo.
+
+Funcionalidades:
+
+- seleção entre CPF e CRMV;
+- campo de senha;
+- validação de campos obrigatórios;
+- navegação para cadastro;
+- navegação para recuperação de senha;
+- entrada no fluxo principal do aplicativo.
+
+Observação: nesta versão, o login não realiza autenticação em servidor. O acesso é validado apenas em modo demonstrativo.
+
+---
+
+### Cadastro
+
+Tela para criação de conta profissional em modo demonstrativo.
+
+Funcionalidades:
+
+- seleção entre CPF e CRMV;
+- seleção de UF para CRMV;
+- preenchimento de e-mail dividido em usuário, domínio e sufixo;
+- seleção de sufixo `.com` ou `.com.br`;
+- validação mínima de e-mail;
+- cadastro de senha e confirmação;
+- retorno para a tela de login após cadastro.
+
+Observação: o cadastro ainda não persiste usuários em banco externo. O fluxo foi implementado para simular a criação de conta dentro do escopo mobile.
+
+---
+
+### Recuperar Senha
+
+Tela de recuperação de senha em modo demonstrativo.
+
+Funcionalidades:
+
+- preenchimento de e-mail;
+- seleção entre CPF e CRMV;
+- seleção de UF para CRMV;
+- validação dos dados informados;
+- simulação do envio de link de redefinição.
+
+Observação: não há envio real de e-mail nesta versão.
+
+---
+
+### Dashboard
+
+Tela inicial após o login.
+
+Funcionalidades:
+
+- exibição de resumo das atividades diárias;
+- contagem de atendimentos cadastrados para o dia atual;
+- listagem dos atendimentos do dia;
+- visualização dos detalhes de cada atendimento;
+- atualização automática ao retornar para a tela;
+- abertura do menu lateral global.
+
+Os dados exibidos no Dashboard são carregados a partir dos registros clínicos salvos localmente no `AsyncStorage`.
+
+---
+
+### Registro Clínico
+
+Tela responsável pelo cadastro de atendimentos clínicos.
+
+Funcionalidades:
+
+- busca de tutor por CPF;
+- cadastro ou vinculação de novo tutor quando não encontrado;
+- cadastro de dados do animal;
+- seleção de espécie;
+- preenchimento de raça, idade e peso;
+- seleção de nível de urgência;
+- cadastro de data de retorno;
+- preenchimento de observações clínicas;
+- salvamento do registro no `AsyncStorage`.
+
+Os registros salvos nesta tela alimentam o Dashboard e o Histórico Clínico.
+
+---
+
+### Histórico Clínico
+
+Tela para consulta dos últimos atendimentos anteriores ao dia atual.
+
+Funcionalidades:
+
+- exibição das últimas consultas realizadas;
+- filtro por CPF do tutor;
+- filtro por data da consulta;
+- aviso quando tutor não é encontrado;
+- aviso quando não há consultas para a data pesquisada;
+- separação entre atendimentos do dia atual e histórico anterior.
+
+Observação: os atendimentos do dia atual aparecem no Dashboard. O Histórico exibe apenas consultas anteriores.
+
+---
+
+### Perfil
+
+Tela de dados do profissional logado.
+
+Funcionalidades:
+
+- visualização dos dados do profissional;
+- edição de nome, documento, e-mail, telefone, clínica e especialidade;
+- alteração entre CPF e CRMV;
+- salvamento dos dados no `AsyncStorage`;
+- restauração do perfil padrão.
+
+---
+
+### Configurações
+
+Tela de preferências e gerenciamento local.
+
+Funcionalidades:
+
+- alternância de tema claro/escuro global;
+- controle visual de notificações em modo demonstrativo;
+- controle visual de modo demonstrativo;
+- visualização da quantidade de registros clínicos salvos;
+- atualização do resumo local;
+- limpeza dos registros clínicos;
+- restauração do perfil;
+- limpeza de todos os dados locais.
+
+---
+
+## Estrutura de Pastas
+
+A estrutura principal do projeto segue a organização abaixo:
 
 ```text
-Animed-Sprint1-DotNet/
-├── Animed.slnx
-├── dotnet-tools.json
+Animed-Sprint1-Mobile/
+├── App.tsx
+├── index.ts
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── app.json
 ├── README.md
-└── AnimedApi/
-    ├── Controllers/
-    ├── Data/
-    ├── Dtos/
-    ├── Models/
-    ├── Repositories/
-    ├── Services/
-    ├── Program.cs
-    ├── appsettings.json
-    └── AnimedApi.csproj
+├── assets/
+│   └── Animed_Logo.png
+└── src/
+    ├── model/
+    │   ├── Animal.ts
+    │   ├── RegistroClinico.ts
+    │   ├── Tutor.ts
+    │   └── Usuario.ts
+    └── screen/
+        ├── LoginScreen.tsx
+        ├── CadastroScreen.tsx
+        ├── RecuperarSenhaScreen.tsx
+        ├── DashboardScreen.tsx
+        ├── RegistroClinicoScreen.tsx
+        ├── HistoricoClinicoScreen.tsx
+        ├── PerfilScreen.tsx
+        └── ConfiguracoesScreen.tsx
 ```
-
-### Camadas
-
-- `Controllers`: recebem as requisições HTTP e retornam as respostas da API.
-- `Services`: concentram regras de negócio, validações e chamadas aos repositórios.
-- `Repositories`: realizam o acesso aos dados utilizando Entity Framework Core.
-- `Models`: representam as entidades persistidas no banco de dados.
-- `Dtos`: representam os objetos de entrada e saída da API.
-- `Data`: contém o `AnimedDbContext`, responsável pela configuração do banco.
 
 ---
 
-## Entidades Principais
+## Armazenamento Local
 
-A API possui quatro entidades principais:
+O app utiliza as seguintes chaves no `AsyncStorage`:
 
-- Tutor
-- Pet
-- Consulta
-- Vacina
-
-### Tutor
-
-Representa o responsável pelo pet.
-
-Campos principais:
-
-- Id
-- Nome
-- CPF
-- Email
-- Telefone
-- CriadoEm
-
-### Pet
-
-Representa o animal vinculado a um tutor.
-
-Campos principais:
-
-- Id
-- Nome
-- Espécie
-- Raça
-- Idade
-- Peso
-- TutorId
-- CriadoEm
-
-### Consulta
-
-Representa uma consulta clínica realizada para um pet.
-
-Campos principais:
-
-- Id
-- DataConsulta
-- Motivo
-- Diagnóstico
-- Tratamento
-- Observações
-- NivelUrgencia
-- TutorId
-- PetId
-- CriadoEm
-
-### Vacina
-
-Representa uma vacina aplicada em um pet.
-
-Campos principais:
-
-- Id
-- Nome
-- DataAplicacao
-- DataProximaDose
-- Observações
-- PetId
-- CriadoEm
-
----
-
-## Banco de Dados
-
-A API utiliza **Oracle Database** com **Entity Framework Core**.
-
-A configuração do banco está no `Program.cs`:
-
-```csharp
-builder.Services.AddDbContext<AnimedDbContext>(options =>
-{
-    options.UseOracle(builder.Configuration.GetConnectionString("AnimedDatabase"));
-});
+```text
+@animed:registrosClinicos
+@animed:perfilUsuario
+@animed:configuracoesApp
 ```
 
-A connection string fica configurada em `appsettings.json`, porém sem senha real:
+### Registros Clínicos
 
-```json
-{
-  "ConnectionStrings": {
-    "AnimedDatabase": "User Id=SEU_USUARIO_ORACLE;Password=SENHA_CONFIGURADA_NO_USER_SECRETS;Data Source=oracle.fiap.com.br:1521/ORCL"
-  }
-}
-```
+Cada registro clínico contém informações como:
 
-A senha real deve ser configurada localmente usando **User Secrets**, para evitar expor credenciais no GitHub.
-
----
-
-## Configuração do User Secrets
-
-Dentro da pasta `AnimedApi`, execute:
-
-```powershell
-dotnet user-secrets init
-```
-
-Depois configure a connection string real:
-
-```powershell
-dotnet user-secrets set "ConnectionStrings:AnimedDatabase" "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=oracle.fiap.com.br:1521/ORCL"
-```
-
-Observação: a senha real do banco não deve ser commitada no repositório.
+- id;
+- CPF do tutor;
+- nome do tutor;
+- telefone do tutor;
+- nome do animal;
+- espécie;
+- raça;
+- idade;
+- peso;
+- urgência;
+- data de retorno;
+- observações clínicas;
+- data de criação.
 
 ---
 
@@ -181,236 +331,219 @@ Observação: a senha real do banco não deve ser commitada no repositório.
 
 ### 1. Clonar o repositório
 
-```powershell
-git clone https://github.com/lucas-fortes/Animed-Sprint1-DotNet.git
+```bash
+git clone https://github.com/lucas-fortes/Animed-Sprint1-Mobile.git
 ```
 
-### 2. Entrar na pasta do projeto
+### 2. Acessar a pasta do projeto
 
-```powershell
-cd Animed-Sprint1-DotNet
+```bash
+cd Animed-Sprint1-Mobile
 ```
 
-### 3. Restaurar dependências
+### 3. Instalar as dependências
 
-```powershell
-dotnet restore
+```bash
+npm install
 ```
 
-### 4. Compilar o projeto
+### 4. Instalar dependências Expo, caso necessário
 
-```powershell
-dotnet build
+```bash
+npx expo install @react-native-async-storage/async-storage
+npx expo install @expo/vector-icons
+npx expo install react-native-screens react-native-safe-area-context
 ```
 
-### 5. Entrar na pasta da API
+### 5. Executar o projeto
 
-```powershell
-cd AnimedApi
+```bash
+npx expo start
 ```
 
-### 6. Executar a API
+### 6. Abrir no Android
 
-```powershell
-dotnet run
-```
-
-### 7. Acessar o Swagger
-
-Abra no navegador:
+Com o emulador Android aberto, pressione:
 
 ```text
-http://localhost:5073/swagger
+a
 ```
 
-A porta pode variar conforme o ambiente local. Caso seja diferente, utilize a porta exibida no terminal após executar `dotnet run`.
+Ou execute diretamente:
 
----
-
-## Migrations
-
-Para criar uma migration:
-
-```powershell
-dotnet tool run dotnet-ef migrations add CriacaoInicialOracle
-```
-
-Para aplicar as alterações no banco Oracle:
-
-```powershell
-dotnet tool run dotnet-ef database update
+```bash
+npx expo start --android
 ```
 
 ---
 
-## Endpoints da API
+## Fluxo de Teste Sugerido
 
-### Tutores
+### Login
 
-| Método | Rota | Descrição |
-|---|---|---|
-| GET | `/api/tutores` | Lista todos os tutores |
-| GET | `/api/tutores/{id}` | Busca um tutor por ID |
-| POST | `/api/tutores` | Cria um novo tutor |
-| PUT | `/api/tutores/{id}` | Atualiza um tutor existente |
-| DELETE | `/api/tutores/{id}` | Remove um tutor |
-
-### Pets
-
-| Método | Rota | Descrição |
-|---|---|---|
-| GET | `/api/pets` | Lista todos os pets |
-| GET | `/api/pets/{id}` | Busca um pet por ID |
-| GET | `/api/pets/tutor/{tutorId}` | Lista pets vinculados a um tutor |
-| POST | `/api/pets` | Cria um novo pet |
-| PUT | `/api/pets/{id}` | Atualiza um pet existente |
-| DELETE | `/api/pets/{id}` | Remove um pet |
-
-### Consultas
-
-| Método | Rota | Descrição |
-|---|---|---|
-| GET | `/api/consultas` | Lista consultas |
-| GET | `/api/consultas/{id}` | Busca uma consulta por ID |
-| GET | `/api/consultas?tutorId=&petId=&data=` | Filtra consultas por tutor, pet ou data |
-| POST | `/api/consultas` | Cria uma nova consulta |
-| PUT | `/api/consultas/{id}` | Atualiza uma consulta existente |
-| DELETE | `/api/consultas/{id}` | Remove uma consulta |
-
-### Vacinas
-
-| Método | Rota | Descrição |
-|---|---|---|
-| GET | `/api/vacinas` | Lista vacinas |
-| GET | `/api/vacinas/{id}` | Busca uma vacina por ID |
-| GET | `/api/vacinas?petId=` | Filtra vacinas por pet |
-| POST | `/api/vacinas` | Cria uma nova vacina |
-| PUT | `/api/vacinas/{id}` | Atualiza uma vacina existente |
-| DELETE | `/api/vacinas/{id}` | Remove uma vacina |
-
----
-
-## Exemplos de Requisição
-
-### Criar Tutor
-
-```json
-{
-  "nome": "Ana Silva",
-  "cpf": "12345678995",
-  "email": "ana.silva@email.com",
-  "telefone": "11999991000"
-}
-```
-
-### Criar Pet
-
-```json
-{
-  "nome": "Cookie",
-  "especie": "Canina",
-  "raca": "Golden Retriever",
-  "idade": 4,
-  "peso": 21.5,
-  "tutorId": 1
-}
-```
-
-### Criar Consulta
-
-```json
-{
-  "dataConsulta": "2026-05-24T20:30:00",
-  "motivo": "Check-up geral",
-  "diagnostico": "Animal em bom estado geral",
-  "tratamento": "Manter rotina de acompanhamento",
-  "observacoes": "Retorno recomendado em 30 dias",
-  "nivelUrgencia": "Baixa",
-  "tutorId": 1,
-  "petId": 1
-}
-```
-
-### Criar Vacina
-
-```json
-{
-  "nome": "Vacina V10",
-  "dataAplicacao": "2026-05-24T20:40:00",
-  "dataProximaDose": "2027-05-24T20:40:00",
-  "observacoes": "Aplicação anual preventiva",
-  "petId": 1
-}
-```
-
----
-
-## Códigos HTTP Utilizados
-
-A API utiliza retornos HTTP adequados para operações REST:
-
-- `200 OK`: consulta realizada com sucesso;
-- `201 Created`: recurso criado com sucesso;
-- `204 No Content`: recurso removido com sucesso;
-- `400 Bad Request`: erro de validação;
-- `404 Not Found`: recurso não encontrado.
-
----
-
-## Validações Implementadas
-
-A API possui validações nas camadas de serviço, incluindo:
-
-- obrigatoriedade de nome do tutor;
-- CPF do tutor com 11 números;
-- obrigatoriedade de e-mail e telefone do tutor;
-- obrigatoriedade de nome e espécie do pet;
-- idade do pet não negativa;
-- peso do pet maior que zero;
-- validação de existência do tutor antes de cadastrar pet;
-- validação de existência do tutor e pet antes de cadastrar consulta;
-- validação de vínculo entre pet e tutor na consulta;
-- validação de existência do pet antes de cadastrar vacina.
-
----
-
-## Organização REST
-
-A API foi organizada utilizando padrão REST, com separação dos métodos HTTP:
-
-- `GET` para consultas;
-- `POST` para criação;
-- `PUT` para atualização;
-- `DELETE` para remoção.
-
-As rotas seguem o padrão:
+1. Abrir o aplicativo.
+2. Selecionar CPF.
+3. Digitar um CPF no formato:
 
 ```text
-/api/tutores
-/api/pets
-/api/consultas
-/api/vacinas
+123.456.789-95
 ```
+
+4. Digitar uma senha qualquer.
+5. Pressionar o botão de entrada.
 
 ---
 
-## Observações de Segurança
+### Registro Clínico
 
-- A senha do banco Oracle não deve ser enviada para o GitHub.
-- A connection string real deve ser configurada localmente usando User Secrets.
-- Arquivos locais como `.vs/`, `bin/`, `obj/`, `appsettings.Development.json` e arquivos de usuário são ignorados pelo `.gitignore`.
+1. Acessar a aba `Registro`.
+2. Digitar o CPF de tutor mockado:
+
+```text
+123.456.789-95
+```
+
+3. Pressionar o botão de busca.
+4. Preencher os dados do animal.
+5. Selecionar nível de urgência.
+6. Informar uma data de retorno.
+7. Informar observações clínicas.
+8. Salvar o registro.
+
+---
+
+### Dashboard
+
+1. Cadastrar um registro com a data de retorno igual à data atual.
+2. Voltar para a tela `Início`.
+3. Verificar se o atendimento aparece no Dashboard.
+
+---
+
+### Histórico
+
+1. Cadastrar um registro com data anterior à data atual.
+2. Acessar a tela `Histórico`.
+3. Verificar se o atendimento aparece na lista.
+4. Testar busca por CPF.
+5. Testar busca por data.
+
+---
+
+### Perfil
+
+1. Acessar a aba `Perfil`.
+2. Ativar modo de edição.
+3. Alterar dados do profissional.
+4. Salvar.
+5. Fechar e reabrir a tela para validar a persistência local.
+
+---
+
+### Configurações
+
+1. Acessar a tela `Configurações` pelo menu lateral.
+2. Alternar tema claro/escuro.
+3. Atualizar resumo local.
+4. Testar limpeza dos registros clínicos.
+5. Testar restauração do perfil.
+6. Testar limpeza de todos os dados locais.
+
+---
+
+## Observações Importantes
+
+Este projeto foi desenvolvido para fins acadêmicos e funciona em modo demonstrativo.
+
+Nesta versão:
+
+- não há autenticação real com servidor;
+- não há banco de dados remoto;
+- não há envio real de e-mail;
+- não há API externa integrada;
+- os dados são salvos localmente com `AsyncStorage`;
+- o foco é demonstrar os conceitos de React Native trabalhados na disciplina.
+
+---
+
+## Limitações Conhecidas
+
+- A validação de CPF considera apenas o tamanho e a formatação, não o cálculo dos dígitos verificadores.
+- O CRMV é validado de forma simplificada.
+- O envio de redefinição de senha é apenas demonstrativo.
+- A tela de login não consulta uma base real de usuários.
+- Os tutores iniciais da tela de registro são mockados.
+- O modo de notificações é visual e demonstrativo.
+- O armazenamento local pode ser apagado pelo usuário nas configurações.
+
+---
+
+## Possíveis Evoluções Futuras
+
+As próximas versões podem incluir:
+
+- integração com API;
+- persistência em banco de dados;
+- autenticação real;
+- cadastro persistente de tutores;
+- cadastro persistente de animais;
+- agenda com horários reais;
+- lembretes de vacinação, retorno e medicação;
+- notificações locais;
+- relatórios clínicos;
+- indicadores para clínicas veterinárias.
+
+Essas evoluções não fazem parte da versão atual do app mobile, mas representam possibilidades de continuidade do projeto.
+
+---
+
+## Comandos Úteis
+
+### Rodar o projeto
+
+```bash
+npx expo start
+```
+
+### Rodar limpando cache
+
+```bash
+npx expo start --clear
+```
+
+### Verificar arquivos modificados
+
+```bash
+git status
+```
+
+### Adicionar alterações
+
+```bash
+git add .
+```
+
+### Criar commit
+
+```bash
+git commit -m "docs: ajusta documentacao do projeto mobile"
+```
+
+### Enviar para o repositório
+
+```bash
+git push origin main
+```
 
 ---
 
 ## Status da Entrega
 
 ```text
-API REST criada com ASP.NET Core.
-CRUD implementado para Tutores, Pets, Consultas e Vacinas.
-Entity Framework Core configurado.
-Persistência configurada com Oracle Database.
-Swagger/OpenAPI habilitado.
-Arquitetura organizada em Controllers, Services, Repositories, DTOs, Models e Data.
-Retornos HTTP adequados implementados.
-Validações principais implementadas nas Services.
+Projeto mobile desenvolvido com React Native, Expo e TypeScript.
+Telas principais implementadas.
+Navegação por abas e menu lateral global configurados.
+Persistência local implementada com AsyncStorage.
+Fluxos de login, cadastro, recuperação de senha, dashboard, registro clínico, histórico, perfil e configurações implementados.
+README documentando descrição, tecnologias, execução e fluxo de testes.
 ```
